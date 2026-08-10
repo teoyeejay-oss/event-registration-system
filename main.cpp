@@ -17,16 +17,16 @@ int main() {
     cin >> choice;
 
     if (choice == 1) {
-        pm();
+        participantManagement();
     }
     else if (choice == 2) {
-        tm();
+        tournamentManagement();
     }
     else if (choice == 3) {
-        rm();
+        registrationManagement();
     }
     else if (choice == 4) {
-        rp();
+        reports();
     }
     else if (choice == 5) {
         cout << "Exiting the program." << endl;
