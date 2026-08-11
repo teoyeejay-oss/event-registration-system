@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "event-re.3F41DE07\\x64\\Debug\\main.obj",
+            "outputs": [
+                "event-re.3F41DE07\\x64\\Debug\\main.cpp.obj.dt.module.json",
+                "event-re.3F41DE07\\x64\\Debug\\main.cpp.obj.dt.d.json"
+            ],
+            "requires": []
+        }
+    ]
+}
