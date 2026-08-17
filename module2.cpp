@@ -6,6 +6,7 @@ using namespace std;
 void add();
 void update();
 void search();
+void display();
 
 // Global variables
 string tournamentIDs[100];
@@ -34,28 +35,22 @@ void tournamentMenu()
 
         cin >> choice;
 
-        if (choice == 1)
-        {
+        if (choice == 1) {
             add();
         }
-        else if (choice == 2)
-        {
+        else if (choice == 2) {
             update();
         }
-        else if (choice == 3)
-        {
+        else if (choice == 3) {
             search();
         }
-        else if (choice == 4)
-        {
+        else if (choice == 4) {
             display();
         }
-        else if (choice == 5)
-        {
-            cout << "Back to Main Menu" << endl;
+        else if (choice == 5) {
+            return;
         }
-        else
-        {
+        else {
             cout << "Invalid choice" << endl;
         }
 
@@ -194,19 +189,188 @@ void add(){
 }
 
 void update() {
-    string tournament_name, game_name, date;
-    cout << "Please enter the tournament name to update: ";
-    cin >> tournament_name;
-    cout << "Please enter the new game name: ";
-    cin >> game_name;
-    cout << "Please enter the new date: ";
-    cin >> date;
-    cout << "Update tournament successful!" << endl;
+    string game_name, tournamentID;
+    int game_choice;
+
+    while (true) {
+        cout << "Please enter the tournament ID to update: ";
+        cin >> tournamentID;
+
+        int index = -1;
+
+        // Find the tournament
+        for (int i = 0; i < tournamentCount; i++)
+        {
+            if (tournamentIDs[i] == tournamentID)
+            {
+                index = i;
+                break;
+            }
+        }
+
+        // Tournament ID not found
+        if (index == -1)
+        {
+            cout << "Tournament ID not found! " << endl;
+            cout << "Please enter a valid tournament ID." << endl;
+            continue;
+        }
+
+        cout << "Tournament ID found!" << endl;
+        cout << "Only the game name and date can be updated." << endl;
+
+        // Select new game
+        while (true)
+        {
+            cout << "Please select a game:" << endl;
+            cout << "1. Valorant" << endl;
+            cout << "2. Mobile Legends" << endl;
+            cout << "3. PUBG" << endl;
+            cout << "4. EA FC" << endl;
+            cout << "Please enter your game choice (1-4): ";
+
+            cin >> game_choice;
+
+            switch (game_choice)
+            {
+            case 1:
+                game_name = "Valorant";
+                break;
+
+            case 2:
+                game_name = "Mobile Legends";
+                break;
+
+            case 3:
+                game_name = "PUBG";
+                break;
+
+            case 4:
+                game_name = "EA FC";
+                break;
+
+            default:
+                cout << "Invalid choice!" << endl;
+                continue;
+            }
+
+            // Check whether it is already the same game
+            if (gameNames[index] == game_name) {
+                cout << "You are already choosing this game. " << endl;
+                continue;
+            }
+
+            // Update game
+            gameNames[index] = game_name;
+            cout << "Game name updated successfully!" << endl;
+
+            break;
+        }
+
+        int day, month, year;
+
+		// Update tournament date
+        while (true)   
+        {
+            cout << "Please enter the new tournament date!" << endl;
+
+            // Day
+            while (true) {
+                cout << "Enter the day (1-31): ";
+                cin >> day;
+
+                if (day < 1 || day > 31)
+                {
+                    cout << "Invalid day! Please enter a valid day (1-31)." << endl;
+                    continue;
+                }
+
+                break;
+            }
+
+            // Month
+            while (true) {
+                cout << "Enter the month (1-12): ";
+                cin >> month;
+
+                if (month < 1 || month > 12)
+                {
+                    cout << "Invalid month! Please enter a valid month (1-12)." << endl;
+                    continue;
+                }
+
+                break;
+            }
+
+            // Year
+            while (true) {
+                cout << "Enter the year (2026 or 2027): ";
+                cin >> year;
+
+                if (year != 2026 && year != 2027)
+                {
+                    cout << "Invalid year! Please enter either 2026 or 2027." << endl;
+                    continue;
+                }
+
+                break;
+            }
+
+            // Check if the date is the same as the current date
+            if (days[index] == day &&
+                months[index] == month &&
+                years[index] == year) {
+                cout << "You are already using this date!" << endl;
+                continue;
+            }
+
+            // Date is valid and different
+            break;
+        }
+	}
+
+  
 }
 
 void search() {
-    string tournament_name;
-    cout << "Please enter the tournament name to search: ";
-    cin >> tournament_name;
-    cout << "Search tournament successful!" << endl;
+    string tournamentID, game_name;
+	
+	while (true) {
+		cout << "Please enter the tournament ID to search: ";
+		cin >> tournamentID;
+		int index = -1;
+		// Find the tournament ID
+		for (int i = 0; i < tournamentCount; i++) {
+			if (tournamentIDs[i] == tournamentID) {
+				index = i;
+				break;
+			}
+		}
+		// Tournament ID not found
+		if (index == -1) {
+			cout << "Tournament ID not found! " << endl;
+			cout << "Please enter a valid tournament ID." << endl;
+			continue;
+		}
+		// Tournament ID found, display details
+		cout << "Tournament ID: " << tournamentIDs[index] << endl;
+		cout << "Game Name: " << gameNames[index] << endl;
+		cout << "Tournament Date: " << days[index] << "/" << months[index] << "/" << years[index] << endl;
+
+		break;
+	}
+}
+
+void display() {
+	if (tournamentCount == 0) {
+		cout << "No tournaments available." << endl;
+		return;
+	}
+	cout << "Tournament List:" << endl;
+	for (int i = 0; i < tournamentCount; i++) {
+		cout << "Tournament ID: " << tournamentIDs[i] << endl;
+		cout << "Game Name: " << gameNames[i] << endl;
+		cout << "Tournament Date: " << days[i] << "/" << months[i] << "/" << years[i] << endl;
+		cout << "----------------------" << endl;
+	}
 }
