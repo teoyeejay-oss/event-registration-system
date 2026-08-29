@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <fstream>
+#include <limits>
 using namespace std;
 
 // Registration struct
@@ -12,8 +14,10 @@ struct Add_registration
     string status;
 };
 
-Add_registration registrations[100];
+const int MAX_REGISTRATIONS = 100;
+Add_registration registrations[MAX_REGISTRATIONS];
 int registrationCount = 0;
+bool dataLoaded = false;
 
 // Function declarations
 void registrationMenu();
@@ -22,9 +26,18 @@ void cancel_registration();
 void modify_registration();
 void search_registration();
 void display_registration_summary();
+void loadRegistrations();
+void saveRegistrations();
+int readMenuChoice();
 
 void registrationMenu()
 {
+    if (!dataLoaded)
+    {
+        loadRegistrations();
+        dataLoaded = true;
+    }
+
     int choice = 0;
 
     do
@@ -39,7 +52,8 @@ void registrationMenu()
         cout << "5. Display Registration Summary" << endl;
         cout << "6. Back" << endl;
         cout << "Enter choice: ";
-        cin >> choice;
+
+        choice = readMenuChoice();
 
         if (choice == 1)
         {
@@ -73,13 +87,73 @@ void registrationMenu()
     } while (choice != 6);
 }
 
+
+int readMenuChoice()
+{
+    int choice;
+
+    while (!(cin >> choice))
+    {
+        cin.clear();                                         
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Invalid input! Please enter a number: ";
+    }
+
+    return choice;
+}
+
+
+void loadRegistrations()
+{
+    ifstream inFile("registrations.txt");
+
+    if (!inFile)
+    {
+        return; // no saved file yet, nothing to load
+    }
+
+    registrationCount = 0;
+
+    while (registrationCount < MAX_REGISTRATIONS &&
+           inFile >> registrations[registrationCount].regID >>
+                     registrations[registrationCount].participantID >>
+                     registrations[registrationCount].tournamentID >>
+                     registrations[registrationCount].status)
+    {
+        registrationCount++;
+    }
+
+    inFile.close();
+}
+
+void saveRegistrations()
+{
+    ofstream outFile("registrations.txt");
+
+    for (int i = 0; i < registrationCount; i++)
+    {
+        outFile << registrations[i].regID << " "
+                << registrations[i].participantID << " "
+                << registrations[i].tournamentID << " "
+                << registrations[i].status << endl;
+    }
+
+    outFile.close();
+}
+
 void create_registration()
 {
+    if (registrationCount >= MAX_REGISTRATIONS)
+    {
+        cout << "\nCannot create registration: maximum of "
+             << MAX_REGISTRATIONS << " registrations reached!" << endl;
+        return;
+    }
+
     string regID, participantID, tournamentID;
 
     cout << "\n--------Create Registration---------" << endl;
 
-    // Enter and validate Registration ID
     while (true)
     {
         cout << "Enter the Registration ID: ";
@@ -110,13 +184,24 @@ void create_registration()
         break;
     }
 
-    // Enter Participant ID (no cross-check with Module 1 for now)
+    // Enter Participant ID
     cout << "Enter the Participant ID: ";
     cin >> participantID;
 
-    // Enter Tournament ID (no cross-check with Module 2 for now)
+    // Enter Tournament ID
     cout << "Enter the Tournament ID: ";
     cin >> tournamentID;
+
+    for (int i = 0; i < registrationCount; i++)
+    {
+        if (registrations[i].participantID == participantID &&
+            registrations[i].tournamentID == tournamentID &&
+            registrations[i].status == "Active")
+        {
+            cout << "\nThis participant is already registered for this tournament!" << endl;
+            return;
+        }
+    }
 
     // Store the registration
     registrations[registrationCount].regID = regID;
@@ -125,6 +210,7 @@ void create_registration()
     registrations[registrationCount].status = "Active";
 
     registrationCount++;
+    saveRegistrations();
 
     cout << "\nRegistration created successfully!" << endl;
 }
@@ -159,6 +245,7 @@ void cancel_registration()
         else
         {
             registrations[index].status = "Cancelled";
+            saveRegistrations();
             cout << "\nRegistration cancelled successfully!" << endl;
         }
     }
@@ -194,11 +281,29 @@ void modify_registration()
         cout << "Registration found!" << endl;
         cout << "Only Participant ID and Tournament ID can be modified." << endl;
 
+        string newParticipantID, newTournamentID;
+
         cout << "Enter the new Participant ID: ";
-        cin >> registrations[index].participantID;
+        cin >> newParticipantID;
 
         cout << "Enter the new Tournament ID: ";
-        cin >> registrations[index].tournamentID;
+        cin >> newTournamentID;
+
+        for (int i = 0; i < registrationCount; i++)
+        {
+            if (i != index &&
+                registrations[i].participantID == newParticipantID &&
+                registrations[i].tournamentID == newTournamentID &&
+                registrations[i].status == "Active")
+            {
+                cout << "\nThat participant is already registered for that tournament!" << endl;
+                return;
+            }
+        }
+
+        registrations[index].participantID = newParticipantID;
+        registrations[index].tournamentID = newTournamentID;
+        saveRegistrations();
 
         cout << "\nRegistration updated successfully!" << endl;
     }
