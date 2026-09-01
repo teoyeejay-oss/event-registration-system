@@ -1,0 +1,1545 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+
+
+/* =========================================================
+   PARTICIPANT MANAGEMENT
+   ========================================================= */
+
+struct Add_participant
+{
+    string id;
+    string gmail;
+    int age;
+};
+
+Add_participant participants[100];
+int participantCount = 0;
+
+
+// Main Function declarations
+void participantManagement();
+void tournamentMenu();
+void registrationMenu();
+void reportsystem();
+
+
+// Participant Management Function declarations
+void add_participant();
+void Update_participant(Add_participant participants[], int participantCount);
+void Search_participant(Add_participant participants[], int participantCount);
+void Display_all_participant(Add_participant participants[], int participantCount);
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+int main()
+{
+    int choice = 0;
+
+    while (choice != 5)
+    {
+        cout << setfill('=') << setw(45) << " " << endl;
+        cout << "     ESPORTS EVENT REGISTRATION SYSTEM" << endl;
+        cout << setfill('=') << setw(45) << " " << endl;
+
+        cout << "1. Participant Management" << endl;
+        cout << "2. Tournament Management" << endl;
+        cout << "3. Registration Management" << endl;
+        cout << "4. Reports" << endl;
+        cout << "5. Exit" << endl;
+
+        cout << "Enter your choice : ";
+        cin >> choice;
+
+
+        if (choice == 1)
+        {
+            participantManagement();
+        }
+        else if (choice == 2)
+        {
+            tournamentMenu();
+        }
+        else if (choice == 3)
+        {
+            registrationMenu();
+        }
+        else if (choice == 4)
+        {
+            reportsystem();
+        }
+        else if (choice == 5)
+        {
+            cout << "Exiting the program......" << endl;
+        }
+        else
+        {
+            cout << "Invalid choice. Please try again." << endl;
+        }
+
+        cout << endl;
+    }
+
+    return 0;
+}
+
+
+/* =========================================================
+   PARTICIPANT MANAGEMENT
+   ========================================================= */
+
+void participantManagement()
+{
+    int choice = 0;
+
+    do
+    {
+        cout << "\n========================" << endl;
+        cout << "   Participant Menu" << endl;
+        cout << "========================" << endl;
+
+        cout << "1. Add participant" << endl;
+        cout << "2. Update participant" << endl;
+        cout << "3. Search participant" << endl;
+        cout << "4. Display all participant" << endl;
+        cout << "5. Back" << endl;
+
+        cout << "Enter choice : ";
+        cin >> choice;
+
+
+        if (choice == 1)
+        {
+            add_participant();
+        }
+        else if (choice == 2)
+        {
+            Update_participant(participants, participantCount);
+        }
+        else if (choice == 3)
+        {
+            Search_participant(participants, participantCount);
+        }
+        else if (choice == 4)
+        {
+            Display_all_participant(participants, participantCount);
+        }
+        else if (choice == 5)
+        {
+            cout << "Back" << endl;
+        }
+        else
+        {
+            cout << "Invalid choice" << endl;
+        }
+
+    } while (choice != 5);
+}
+
+
+/* ADD PARTICIPANT */
+
+void add_participant()
+{
+    string id;
+
+    cout << "\n-------- Add Participant ---------" << endl;
+
+    cout << "Enter the Participant ID: ";
+    cin >> id;
+
+
+    // Check duplicate ID
+    bool idExists = false;
+
+    for (int i = 0; i < participantCount; i++)
+    {
+        if (participants[i].id == id)
+        {
+            idExists = true;
+            break;
+        }
+    }
+
+
+    if (idExists)
+    {
+        cout << "Error: The participant ID already exists." << endl;
+        cout << "Please enter another ID." << endl;
+    }
+    else
+    {
+        participants[participantCount].id = id;
+
+        cout << "Enter the age: ";
+        cin >> participants[participantCount].age;
+
+        cout << "Enter the gmail: ";
+        cin >> participants[participantCount].gmail;
+
+        participantCount++;
+
+        cout << "\nSuccessfully Added" << endl;
+    }
+}
+
+
+/* UPDATE PARTICIPANT */
+
+void Update_participant(Add_participant participants[], int participantCount)
+{
+    string id;
+
+    cout << "\n--------- Update Participant ---------" << endl;
+
+    cout << "Enter the participant ID: ";
+    cin >> id;
+
+
+    int index = -1;
+
+    for (int i = 0; i < participantCount; i++)
+    {
+        if (participants[i].id == id)
+        {
+            index = i;
+            break;
+        }
+    }
+
+
+    if (index != -1)
+    {
+        cout << "Enter the new age: ";
+        cin >> participants[index].age;
+
+        cout << "Enter the new gmail: ";
+        cin >> participants[index].gmail;
+
+        cout << "\nSuccessfully Updated" << endl;
+    }
+    else
+    {
+        cout << "Participant ID not found." << endl;
+    }
+}
+
+
+/* SEARCH PARTICIPANT */
+
+void Search_participant(Add_participant participants[], int participantCount)
+{
+    string id;
+
+    cout << "\n--------- Search Participant ---------" << endl;
+
+    cout << "Enter the participant ID: ";
+    cin >> id;
+
+
+    bool found = false;
+
+    for (int i = 0; i < participantCount; i++)
+    {
+        if (participants[i].id == id)
+        {
+            found = true;
+
+            cout << "\nParticipant Details" << endl;
+            cout << "ID    : " << participants[i].id << endl;
+            cout << "Age   : " << participants[i].age << endl;
+            cout << "Gmail : " << participants[i].gmail << endl;
+
+            break;
+        }
+    }
+
+
+    if (!found)
+    {
+        cout << "\nParticipant ID not found." << endl;
+    }
+}
+
+
+/* DISPLAY ALL PARTICIPANTS */
+
+void Display_all_participant(Add_participant participants[], int participantCount)
+{
+    cout << "\n--------- Display All Participants ---------" << endl;
+
+
+    if (participantCount > 0)
+    {
+        for (int i = 0; i < participantCount; i++)
+        {
+            cout << "\nParticipant " << i + 1 << endl;
+
+            cout << "ID    : " << participants[i].id << endl;
+            cout << "Age   : " << participants[i].age << endl;
+            cout << "Gmail : " << participants[i].gmail << endl;
+
+            cout << "----------------------" << endl;
+        }
+    }
+    else
+    {
+        cout << "No participants." << endl;
+    }
+}
+
+
+/* =========================================================
+   TOURNAMENT MANAGEMENT
+   ========================================================= */
+
+void add();
+void update();
+void search();
+void display();
+
+
+string tournamentIDs[100];
+string gameNames[100];
+
+int days[100];
+int months[100];
+int years[100];
+
+int tournamentCount = 0;
+
+
+/* TOURNAMENT MENU */
+
+void tournamentMenu()
+{
+    int choice;
+
+    do
+    {
+        cout << "\n========================" << endl;
+        cout << "   Tournament Menu" << endl;
+        cout << "========================" << endl;
+
+        cout << "1. Add Tournament" << endl;
+        cout << "2. Update Tournament" << endl;
+        cout << "3. Search Tournament" << endl;
+        cout << "4. Display All Tournament" << endl;
+        cout << "5. Back" << endl;
+
+        cout << "Enter your choice : ";
+        cin >> choice;
+
+
+        if (choice == 1)
+        {
+            add();
+        }
+        else if (choice == 2)
+        {
+            update();
+        }
+        else if (choice == 3)
+        {
+            search();
+        }
+        else if (choice == 4)
+        {
+            display();
+        }
+        else if (choice == 5)
+        {
+            return;
+        }
+        else
+        {
+            cout << "Invalid choice" << endl;
+        }
+
+    } while (choice != 5);
+}
+
+
+/* ADD TOURNAMENT */
+
+void add()
+{
+    string tournamentID;
+    bool duplicate;
+
+
+    cout << "\n-------- Add Tournament ---------" << endl;
+
+
+    // Tournament ID
+    while (true)
+    {
+        cout << "Please enter tournament ID (e.g., T001): ";
+        cin >> tournamentID;
+
+
+        if (tournamentID.empty())
+        {
+            cout << "Tournament ID cannot be empty!" << endl;
+            continue;
+        }
+
+
+        duplicate = false;
+
+        for (int i = 0; i < tournamentCount; i++)
+        {
+            if (tournamentID == tournamentIDs[i])
+            {
+                duplicate = true;
+                break;
+            }
+        }
+
+
+        if (duplicate)
+        {
+            cout << "Tournament ID already exists!" << endl;
+            continue;
+        }
+
+
+        break;
+    }
+
+
+    tournamentIDs[tournamentCount] = tournamentID;
+
+
+    // Game
+    string game_name;
+    int game_choice;
+
+
+    while (true)
+    {
+        cout << "\nPlease select a game:" << endl;
+        cout << "1. Valorant" << endl;
+        cout << "2. Mobile Legends" << endl;
+        cout << "3. PUBG" << endl;
+        cout << "4. EA FC" << endl;
+
+        cout << "Please enter your game choice (1-4): ";
+        cin >> game_choice;
+
+
+        switch (game_choice)
+        {
+        case 1:
+            game_name = "Valorant";
+            break;
+
+        case 2:
+            game_name = "Mobile Legends";
+            break;
+
+        case 3:
+            game_name = "PUBG";
+            break;
+
+        case 4:
+            game_name = "EA FC";
+            break;
+
+        default:
+            cout << "Invalid choice!" << endl;
+            continue;
+        }
+
+
+        break;
+    }
+
+
+    gameNames[tournamentCount] = game_name;
+
+
+    // Date
+    int day;
+    int month;
+    int year;
+
+
+    while (true)
+    {
+        cout << "\nEnter the day (1-31): ";
+        cin >> day;
+
+
+        if (day < 1 || day > 31)
+        {
+            cout << "Invalid day!" << endl;
+            continue;
+        }
+
+        break;
+    }
+
+
+    while (true)
+    {
+        cout << "Enter the month (1-12): ";
+        cin >> month;
+
+
+        if (month < 1 || month > 12)
+        {
+            cout << "Invalid month!" << endl;
+            continue;
+        }
+
+        break;
+    }
+
+
+    while (true)
+    {
+        cout << "Enter the year (2026 or 2027): ";
+        cin >> year;
+
+
+        if (year != 2026 && year != 2027)
+        {
+            cout << "Invalid year!" << endl;
+            continue;
+        }
+
+        break;
+    }
+
+
+    days[tournamentCount] = day;
+    months[tournamentCount] = month;
+    years[tournamentCount] = year;
+
+
+    tournamentCount++;
+
+
+    cout << "\nAdd tournament successful!" << endl;
+}
+
+
+/* UPDATE TOURNAMENT */
+
+void update()
+{
+    string tournamentID;
+    string game_name;
+
+    int game_choice;
+
+
+    cout << "\n-------- Update Tournament ---------" << endl;
+
+
+    cout << "Please enter the tournament ID to update: ";
+    cin >> tournamentID;
+
+
+    int index = -1;
+
+
+    // Search tournament
+    for (int i = 0; i < tournamentCount; i++)
+    {
+        if (tournamentIDs[i] == tournamentID)
+        {
+            index = i;
+            break;
+        }
+    }
+
+
+    if (index == -1)
+    {
+        cout << "Tournament ID not found!" << endl;
+        return;
+    }
+
+
+    cout << "Tournament ID found!" << endl;
+    cout << "Only the game name and date can be updated." << endl;
+
+
+    // Update game
+    while (true)
+    {
+        cout << "\nPlease select a new game:" << endl;
+        cout << "1. Valorant" << endl;
+        cout << "2. Mobile Legends" << endl;
+        cout << "3. PUBG" << endl;
+        cout << "4. EA FC" << endl;
+
+        cout << "Please enter your game choice (1-4): ";
+        cin >> game_choice;
+
+
+        switch (game_choice)
+        {
+        case 1:
+            game_name = "Valorant";
+            break;
+
+        case 2:
+            game_name = "Mobile Legends";
+            break;
+
+        case 3:
+            game_name = "PUBG";
+            break;
+
+        case 4:
+            game_name = "EA FC";
+            break;
+
+        default:
+            cout << "Invalid choice!" << endl;
+            continue;
+        }
+
+
+        if (gameNames[index] == game_name)
+        {
+            cout << "You are already using this game." << endl;
+            continue;
+        }
+
+
+        gameNames[index] = game_name;
+
+        break;
+    }
+
+
+    // Update date
+    int day;
+    int month;
+    int year;
+
+
+    while (true)
+    {
+        cout << "\nPlease enter the new tournament date." << endl;
+
+
+        while (true)
+        {
+            cout << "Enter the day (1-31): ";
+            cin >> day;
+
+
+            if (day < 1 || day > 31)
+            {
+                cout << "Invalid day!" << endl;
+                continue;
+            }
+
+            break;
+        }
+
+
+        while (true)
+        {
+            cout << "Enter the month (1-12): ";
+            cin >> month;
+
+
+            if (month < 1 || month > 12)
+            {
+                cout << "Invalid month!" << endl;
+                continue;
+            }
+
+            break;
+        }
+
+
+        while (true)
+        {
+            cout << "Enter the year (2026 or 2027): ";
+            cin >> year;
+
+
+            if (year != 2026 && year != 2027)
+            {
+                cout << "Invalid year!" << endl;
+                continue;
+            }
+
+            break;
+        }
+
+
+        if (days[index] == day &&
+            months[index] == month &&
+            years[index] == year)
+        {
+            cout << "You are already using this date!" << endl;
+            continue;
+        }
+
+
+        break;
+    }
+
+
+    // IMPORTANT:
+    // Store the new date
+    days[index] = day;
+    months[index] = month;
+    years[index] = year;
+
+
+    cout << "\nTournament updated successfully!" << endl;
+}
+
+
+/* SEARCH TOURNAMENT */
+
+void search()
+{
+    string tournamentID;
+
+
+    cout << "\n-------- Search Tournament ---------" << endl;
+
+    cout << "Please enter the tournament ID to search: ";
+    cin >> tournamentID;
+
+
+    int index = -1;
+
+
+    for (int i = 0; i < tournamentCount; i++)
+    {
+        if (tournamentIDs[i] == tournamentID)
+        {
+            index = i;
+            break;
+        }
+    }
+
+
+    if (index == -1)
+    {
+        cout << "Tournament ID not found!" << endl;
+        return;
+    }
+
+
+    cout << "\nTournament Details" << endl;
+
+    cout << "Tournament ID : "
+        << tournamentIDs[index] << endl;
+
+    cout << "Game Name     : "
+        << gameNames[index] << endl;
+
+    cout << "Tournament Date : "
+        << days[index] << "/"
+        << months[index] << "/"
+        << years[index] << endl;
+}
+
+
+/* DISPLAY ALL TOURNAMENTS */
+
+void display()
+{
+    if (tournamentCount == 0)
+    {
+        cout << "No tournaments available." << endl;
+        return;
+    }
+
+
+    cout << "\nTournament List:" << endl;
+
+
+    for (int i = 0; i < tournamentCount; i++)
+    {
+        cout << "\nTournament ID : "
+            << tournamentIDs[i] << endl;
+
+        cout << "Game Name     : "
+            << gameNames[i] << endl;
+
+        cout << "Tournament Date : "
+            << days[i] << "/"
+            << months[i] << "/"
+            << years[i] << endl;
+
+        cout << "----------------------" << endl;
+    }
+}
+
+
+/* =========================================================
+   REGISTRATION MANAGEMENT
+   ========================================================= */
+
+struct Add_registration
+{
+    string regID;
+    string participantID;
+    string tournamentID;
+    string status;
+};
+
+
+Add_registration registrations[100];
+int registrationCount = 0;
+
+
+// Registration Function declarations
+void create_registration();
+void cancel_registration();
+void modify_registration();
+void search_registration();
+void display_registration_summary();
+
+
+/* REGISTRATION MENU */
+
+void registrationMenu()
+{
+    int choice = 0;
+
+
+    do
+    {
+        cout << "\n========================" << endl;
+        cout << "   Registration Menu" << endl;
+        cout << "========================" << endl;
+
+        cout << "1. Create Registration" << endl;
+        cout << "2. Cancel Registration" << endl;
+        cout << "3. Modify Registration" << endl;
+        cout << "4. Search Registration" << endl;
+        cout << "5. Display Registration Summary" << endl;
+        cout << "6. Back" << endl;
+
+        cout << "Enter your choice : ";
+        cin >> choice;
+
+
+        if (choice == 1)
+        {
+            create_registration();
+        }
+        else if (choice == 2)
+        {
+            cancel_registration();
+        }
+        else if (choice == 3)
+        {
+            modify_registration();
+        }
+        else if (choice == 4)
+        {
+            search_registration();
+        }
+        else if (choice == 5)
+        {
+            display_registration_summary();
+        }
+        else if (choice == 6)
+        {
+            cout << "Back" << endl;
+        }
+        else
+        {
+            cout << "Invalid choice" << endl;
+        }
+
+
+    } while (choice != 6);
+}
+
+
+/* CREATE REGISTRATION */
+
+void create_registration()
+{
+    string regID;
+    string participantID;
+    string tournamentID;
+
+
+    cout << "\n-------- Create Registration ---------" << endl;
+
+
+    // Registration ID
+    while (true)
+    {
+        cout << "Enter the Registration ID: ";
+        cin >> regID;
+
+
+        bool duplicate = false;
+
+
+        for (int i = 0; i < registrationCount; i++)
+        {
+            if (registrations[i].regID == regID)
+            {
+                duplicate = true;
+                break;
+            }
+        }
+
+
+        if (duplicate)
+        {
+            cout << "Registration ID already exists!" << endl;
+            continue;
+        }
+
+
+        break;
+    }
+
+
+    // Check participant ID
+    while (true)
+    {
+        cout << "Enter the Participant ID: ";
+        cin >> participantID;
+
+
+        bool participantFound = false;
+
+
+        for (int i = 0; i < participantCount; i++)
+        {
+            if (participants[i].id == participantID)
+            {
+                participantFound = true;
+                break;
+            }
+        }
+
+
+        if (participantFound)
+        {
+            break;
+        }
+        else
+        {
+            cout << "Participant ID not found!" << endl;
+            cout << "Please enter an existing Participant ID." << endl;
+        }
+    }
+
+
+    // Check tournament ID
+    while (true)
+    {
+        cout << "Enter the Tournament ID: ";
+        cin >> tournamentID;
+
+
+        bool tournamentFound = false;
+
+
+        for (int i = 0; i < tournamentCount; i++)
+        {
+            if (tournamentIDs[i] == tournamentID)
+            {
+                tournamentFound = true;
+                break;
+            }
+        }
+
+
+        if (tournamentFound)
+        {
+            break;
+        }
+        else
+        {
+            cout << "Tournament ID not found!" << endl;
+            cout << "Please enter an existing Tournament ID." << endl;
+        }
+    }
+
+
+    // Store registration
+    registrations[registrationCount].regID = regID;
+    registrations[registrationCount].participantID = participantID;
+    registrations[registrationCount].tournamentID = tournamentID;
+    registrations[registrationCount].status = "Active";
+
+
+    registrationCount++;
+
+
+    cout << "\nRegistration created successfully!" << endl;
+}
+
+
+/* CANCEL REGISTRATION */
+
+void cancel_registration()
+{
+    string regID;
+
+
+    cout << "\n-------- Cancel Registration ---------" << endl;
+
+    cout << "Enter the Registration ID to cancel: ";
+    cin >> regID;
+
+
+    int index = -1;
+
+
+    for (int i = 0; i < registrationCount; i++)
+    {
+        if (registrations[i].regID == regID)
+        {
+            index = i;
+            break;
+        }
+    }
+
+
+    if (index == -1)
+    {
+        cout << "Registration ID not found!" << endl;
+        return;
+    }
+
+
+    if (registrations[index].status == "Cancelled")
+    {
+        cout << "This registration is already cancelled." << endl;
+    }
+    else
+    {
+        registrations[index].status = "Cancelled";
+
+        cout << "\nRegistration cancelled successfully!" << endl;
+    }
+}
+
+
+/* MODIFY REGISTRATION */
+
+void modify_registration()
+{
+    string regID;
+
+
+    cout << "\n-------- Modify Registration ---------" << endl;
+
+    cout << "Enter the Registration ID to modify: ";
+    cin >> regID;
+
+
+    int index = -1;
+
+
+    for (int i = 0; i < registrationCount; i++)
+    {
+        if (registrations[i].regID == regID)
+        {
+            index = i;
+            break;
+        }
+    }
+
+
+    if (index == -1)
+    {
+        cout << "Registration ID not found!" << endl;
+        return;
+    }
+
+
+    cout << "Registration found!" << endl;
+    cout << "Only Participant ID and Tournament ID can be modified." << endl;
+
+
+    // New participant ID
+    while (true)
+    {
+        cout << "Enter the new Participant ID: ";
+        cin >> registrations[index].participantID;
+
+
+        bool found = false;
+
+
+        for (int i = 0; i < participantCount; i++)
+        {
+            if (participants[i].id == registrations[index].participantID)
+            {
+                found = true;
+                break;
+            }
+        }
+
+
+        if (found)
+        {
+            break;
+        }
+        else
+        {
+            cout << "Participant ID not found!" << endl;
+        }
+    }
+
+
+    // New tournament ID
+    while (true)
+    {
+        cout << "Enter the new Tournament ID: ";
+        cin >> registrations[index].tournamentID;
+
+
+        bool found = false;
+
+
+        for (int i = 0; i < tournamentCount; i++)
+        {
+            if (tournamentIDs[i] == registrations[index].tournamentID)
+            {
+                found = true;
+                break;
+            }
+        }
+
+
+        if (found)
+        {
+            break;
+        }
+        else
+        {
+            cout << "Tournament ID not found!" << endl;
+        }
+    }
+
+
+    cout << "\nRegistration updated successfully!" << endl;
+}
+
+
+/* SEARCH REGISTRATION */
+
+void search_registration()
+{
+    string regID;
+
+
+    cout << "\n-------- Search Registration ---------" << endl;
+
+    cout << "Enter the Registration ID to search: ";
+    cin >> regID;
+
+
+    int index = -1;
+
+
+    for (int i = 0; i < registrationCount; i++)
+    {
+        if (registrations[i].regID == regID)
+        {
+            index = i;
+            break;
+        }
+    }
+
+
+    if (index == -1)
+    {
+        cout << "Registration ID not found!" << endl;
+        return;
+    }
+
+
+    cout << "\nRegistration Details" << endl;
+
+    cout << "Registration ID : "
+        << registrations[index].regID << endl;
+
+    cout << "Participant ID  : "
+        << registrations[index].participantID << endl;
+
+    cout << "Tournament ID   : "
+        << registrations[index].tournamentID << endl;
+
+    cout << "Status          : "
+        << registrations[index].status << endl;
+}
+
+
+/* DISPLAY REGISTRATION SUMMARY */
+
+void display_registration_summary()
+{
+    cout << "\n-------- Registration Summary ---------" << endl;
+
+
+    if (registrationCount == 0)
+    {
+        cout << "No registrations available." << endl;
+        return;
+    }
+
+
+    for (int i = 0; i < registrationCount; i++)
+    {
+        cout << "Registration ID : "
+            << registrations[i].regID << endl;
+
+        cout << "Participant ID  : "
+            << registrations[i].participantID << endl;
+
+        cout << "Tournament ID   : "
+            << registrations[i].tournamentID << endl;
+
+        cout << "Status          : "
+            << registrations[i].status << endl;
+
+        cout << "----------------------" << endl;
+    }
+}
+
+
+/* =========================================================
+   REPORTING MODULE
+   ========================================================= */
+
+   // Report function declarations
+void reporttittle();
+void TotalParticipantns();
+void TotalRegistrations();
+double TotalRevenue();
+void TournamentAnalysis();
+void SortRegistrations();
+
+
+/* REPORT MENU */
+
+void reportsystem()
+{
+    reporttittle();
+
+
+    int reportchoice;
+
+
+    do
+    {
+        cout << "\n\n1. Total Participants"
+            << "\n2. Total Registrations"
+            << "\n3. Total Revenue"
+            << "\n4. Tournament Analysis"
+            << "\n5. Sort Registrations"
+            << "\n6. Back to Main Menu"
+            << "\n\nEnter your choice : ";
+
+        cin >> reportchoice;
+
+
+        switch (reportchoice)
+        {
+        case 1:
+            TotalParticipantns();
+            break;
+
+
+        case 2:
+            TotalRegistrations();
+            break;
+
+
+        case 3:
+        {
+            double revenue = TotalRevenue();
+
+
+            cout << endl
+                << setfill('=') << setw(30) << left << " "
+                << "\nTotal Revenue is : "
+                << setprecision(2) << fixed
+                << revenue
+                << endl
+                << setfill('=') << setw(30) << left << " ";
+
+            break;
+        }
+
+
+        case 4:
+            TournamentAnalysis();
+            break;
+
+
+        case 5:
+            SortRegistrations();
+            break;
+
+
+        case 6:
+            break;
+
+
+        default:
+            cout << "\nINVALID CHOICE, PLEASE TRY AGAIN\n";
+        }
+
+
+    } while (reportchoice != 6);
+
+
+    cout << "\nThank you for using the system!" << endl;
+}
+
+
+/* REPORT TITLE */
+
+void reporttittle()
+{
+    cout << setfill('=') << setw(30) << left << " "
+        << "\n        REPORTING MODULE\n"
+        << setw(30) << left << " "
+        << endl;
+}
+
+
+/* TOTAL PARTICIPANTS */
+
+void TotalParticipantns()
+{
+    cout << endl
+        << setfill('=') << setw(30) << left << " "
+        << "\nTotal Participants is : "
+        << participantCount
+        << endl
+        << setfill('=') << setw(30) << left << " ";
+}
+
+
+/* TOTAL REGISTRATIONS */
+
+void TotalRegistrations()
+{
+    cout << endl
+        << setfill('=') << setw(30) << left << " "
+        << "\nTotal Registrations is : "
+        << registrationCount
+        << endl
+        << setfill('=') << setw(30) << left << " ";
+}
+
+
+/* TOTAL REVENUE */
+
+double TotalRevenue()
+{
+    const double registrationFee = 10.00;
+
+    double total = 0;
+
+
+    for (int i = 0; i < registrationCount; i++)
+    {
+        if (registrations[i].status == "Active")
+        {
+            total += registrationFee;
+        }
+    }
+
+
+    return total;
+}
+
+
+/* TOURNAMENT ANALYSIS */
+
+void TournamentAnalysis()
+{
+    int valorant = 0;
+    int pubg = 0;
+    int mobileLegends = 0;
+    int eaFC = 0;
+
+
+    // Count registrations according to tournament's game
+    for (int i = 0; i < registrationCount; i++)
+    {
+        // Only count active registrations
+        if (registrations[i].status == "Cancelled")
+        {
+            continue;
+        }
+
+
+        string tournamentID = registrations[i].tournamentID;
+
+
+        // Find tournament
+        for (int j = 0; j < tournamentCount; j++)
+        {
+            if (tournamentIDs[j] == tournamentID)
+            {
+                if (gameNames[j] == "Valorant")
+                {
+                    valorant++;
+                }
+                else if (gameNames[j] == "PUBG")
+                {
+                    pubg++;
+                }
+                else if (gameNames[j] == "Mobile Legends")
+                {
+                    mobileLegends++;
+                }
+                else if (gameNames[j] == "EA FC")
+                {
+                    eaFC++;
+                }
+
+
+                break;
+            }
+        }
+    }
+
+
+    string mostPopular;
+    int highest = valorant;
+
+
+    mostPopular = "Valorant";
+
+
+    if (pubg > highest)
+    {
+        highest = pubg;
+        mostPopular = "PUBG";
+    }
+
+
+    if (mobileLegends > highest)
+    {
+        highest = mobileLegends;
+        mostPopular = "Mobile Legends";
+    }
+
+
+    if (eaFC > highest)
+    {
+        highest = eaFC;
+        mostPopular = "EA FC";
+    }
+
+
+    cout << "\n========================================" << endl;
+    cout << "           TOURNAMENT ANALYSIS" << endl;
+    cout << "========================================" << endl;
+
+
+    cout << "Valorant       : " << valorant << " registrations" << endl;
+    cout << "PUBG           : " << pubg << " registrations" << endl;
+    cout << "Mobile Legends : " << mobileLegends << " registrations" << endl;
+    cout << "EA FC          : " << eaFC << " registrations" << endl;
+
+
+    cout << "----------------------------------------" << endl;
+
+    if (registrationCount == 0)
+    {
+        cout << "Most Popular Tournament : No registrations" << endl;
+        cout << "Number of Registrations : 0" << endl;
+    }
+    else
+    {
+        cout << "Most Popular Tournament : "
+            << mostPopular << endl;
+
+        cout << "Number of Registrations : "
+            << highest << endl;
+    }
+
+
+    cout << "========================================" << endl;
+}
+
+
+/* SORT REGISTRATIONS */
+
+void SortRegistrations()
+{
+    if (registrationCount == 0)
+    {
+        cout << "\nNo registrations available to sort.\n";
+        return;
+    }
+
+
+    // Make a temporary array so that
+    // original registration records are not changed.
+    string sortedRegistrationIDs[100];
+
+
+    for (int i = 0; i < registrationCount; i++)
+    {
+        sortedRegistrationIDs[i] = registrations[i].regID;
+    }
+
+
+    // Bubble sort
+    for (int i = 0; i < registrationCount - 1; i++)
+    {
+        for (int j = 0;
+            j < registrationCount - i - 1;
+            j++)
+        {
+            if (sortedRegistrationIDs[j] >
+                sortedRegistrationIDs[j + 1])
+            {
+                string temp = sortedRegistrationIDs[j];
+
+                sortedRegistrationIDs[j] =
+                    sortedRegistrationIDs[j + 1];
+
+                sortedRegistrationIDs[j + 1] =
+                    temp;
+            }
+        }
+    }
+
+
+    cout << endl
+        << setfill('=') << setw(40) << left << " "
+        << "\n       SORTED REGISTRATIONS\n"
+        << setw(40) << left << " ";
+
+
+    for (int i = 0; i < registrationCount; i++)
+    {
+        cout << endl
+            << i + 1 << ". "
+            << sortedRegistrationIDs[i];
+    }
+
+
+    cout << endl
+        << setfill('=') << setw(40) << left << " ";
+}
